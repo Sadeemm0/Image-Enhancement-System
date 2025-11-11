@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Enhancement System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --gray: #6c757d;
+            --border-radius: 16px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            direction: ltr;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: var(--primary);
+            font-size: 1.4rem;
+        }
+
+        .card-title i {
+            font-size: 1.3rem;
+        }
+
+        .upload-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .upload-box {
+            width: 100%;
+            max-width: 500px;
+            background: #f8faff;
+            border: 2px dashed #b8d4fe;
+            border-radius: var(--border-radius);
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .upload-box:hover {
+            background: #f0f5ff;
+            border-color: var(--primary);
+        }
+
+        .upload-box.dragover {
+            background: #e8f0ff;
+            border-color: var(--primary);
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .upload-hint {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        #file-name {
+            margin-top: 15px;
+            font-weight: 500;
+            color: var(--primary);
+            background: #e8f0ff;
+            padding: 8px 15px;
+            border-radius: 50px;
+            display: inline-block;
+        }
+
+        .options-section {
+            margin: 30px 0;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .option-card {
+            background: #f8faff;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .option-card:hover {
+            background: #f0f5ff;
+            transform: translateY(-3px);
+        }
+
+        .option-card.selected {
+            border-color: var(--primary);
+            background: #e8f0ff;
+        }
+
+        .option-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+        }
+
+        .option-content {
+            flex: 1;
+        }
+
+        .option-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+
+        .option-desc {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .option-checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #ced4da;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .option-checkbox.checked {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .option-checkbox.checked:after {
+            content: "✓";
+            color: white;
+            font-size: 14px;
+        }
+
+        input[type="checkbox"] {
+            display: none;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            border-radius: 50px;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(67, 97, 238, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: #f0f5ff;
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .image-card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .image-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-header {
+            padding: 15px 20px;
+            background: #f8faff;
+            border-bottom: 1px solid #eaeaea;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .image-container {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+        }
+
+        .image-container img:hover {
+            transform: scale(1.02);
+        }
+
+        .error-message {
+            background: #ffe6e6;
+            color: #d32f2f;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: center;
+            display: none;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f0f0f0;
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--gray);
+            font-size: 0.9rem;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-camera"></i>
+            </div>
+            <h1> Image Enhancement System</h1>
+            <p class="subtitle">Upload your image and choose processing techniques to get the best results</p>
+        </header>
+
+        <form method="POST" enctype="multipart/form-data" id="processing-form">
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h2>Upload Image</h2>
+                </div>
+                
+                <div class="upload-section">
+                    <div class="upload-box" id="drop-zone">
+                        <div class="upload-icon">
+                            <i class="fas fa-file-image"></i>
+                        </div>
+                        <p class="upload-text">Click or drag your image here</p>
+                        <p class="upload-hint">Supports JPG, PNG, GIF formats</p>
+                        <input type="file" name="image" accept="image/*" required id="file-input">
+                        <div id="file-name"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card options-section">
+                <div class="card-title">
+                    <i class="fas fa-sliders-h"></i>
+                    <h2>Processing Techniques</h2>
+                </div>
+                
+                <div class="options-grid">
+                    <label class="option-card" for="clahe">
+                        <div class="option-icon">
+                            <i class="fas fa-sun"></i>
+                        </div>
+                        <div class="option-content">
+                            <div class="option-title">Contrast Enhancement</div>
+                            <div class="option-desc">Improve color distribution and contrast in the image</div>
+                        </div>
+                        <div class="option-checkbox"></div>
+                        <input type="checkbox" name="technique" value="clahe" id="clahe">
+                    </label>
+                    
+                    <label class="option-card" for="blur">
+                        <div class="option-icon">
+                            <i class="fas fa-blur"></i>
+                        </div>
+                        <div class="option-content">
+                            <div class="option-title">Smoothing</div>
+                            <div class="option-desc">Smooth the image and remove noise</div>
+                        </div>
+                        <div class="option-checkbox"></div>
+                        <input type="checkbox" name="technique" value="blur" id="blur">
+                    </label>
+                    
+                    <label class="option-card" for="canny">
+                        <div class="option-icon">
+                            <i class="fas fa-draw-polygon"></i>
+                        </div>
+                        <div class="option-content">
+                            <div class="option-title">Edge Detection</div>
+                            <div class="option-desc">Extract and highlight edges and details in the image</div>
+                        </div>
+                        <div class="option-checkbox"></div>
+                        <input type="checkbox" name="technique" value="canny" id="canny">
+                    </label>
+                </div>
+                
+                <div class="action-buttons">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-magic"></i>
+                        Process Image
+                    </button>
+                    <button type="reset" class="btn btn-outline" id="reset-btn">
+                        <i class="fas fa-redo"></i>
+                        Reset
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div class="error-message" id="error-message">
+            <!-- Error messages will be inserted here by JavaScript -->
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Processing your image, please wait...</p>
+        </div>
+
+        <div class="results-section" id="results-section">
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-images"></i>
+                    <h2>Results</h2>
+                </div>
+                
+                <div class="results-grid">
+                    <div class="image-card">
+                        <div class="image-header">
+                            <i class="fas fa-image"></i>
+                            Original Image
+                        </div>
+                        <div class="image-container">
+                            <img id="original-img" src="" alt="Original Image">
+                        </div>
+                    </div>
+                    
+                    <div class="image-card">
+                        <div class="image-header">
+                            <i class="fas fa-cogs"></i>
+                            Processed Image
+                        </div>
+                        <div class="image-container">
+                            <img id="processed-img" src="" alt="Processed Image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropZone = document.getElementById('drop-zone');
+            const fileInput = document.getElementById('file-input');
+            const fileName = document.getElementById('file-name');
+            const form = document.getElementById('processing-form');
+            const errorMessage = document.getElementById('error-message');
+            const loading = document.getElementById('loading');
+            const resultsSection = document.getElementById('results-section');
+            const originalImg = document.getElementById('original-img');
+            const processedImg = document.getElementById('processed-img');
+            const resetBtn = document.getElementById('reset-btn');
+            const optionCards = document.querySelectorAll('.option-card');
+            
+            // Manage technique selection
+            optionCards.forEach(card => {
+                const checkbox = card.querySelector('input[type="checkbox"]');
+                
+                card.addEventListener('click', () => {
+                    checkbox.checked = !checkbox.checked;
+                    if (checkbox.checked) {
+                        card.classList.add('selected');
+                        card.querySelector('.option-checkbox').classList.add('checked');
+                    } else {
+                        card.classList.remove('selected');
+                        card.querySelector('.option-checkbox').classList.remove('checked');
+                    }
+                });
+            });
+            
+            // Handle file drag and drop
+            dropZone.addEventListener('click', () => fileInput.click());
+            
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+            
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('dragover');
+            });
+            
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                
+                if (e.dataTransfer.files.length) {
+                    fileInput.files = e.dataTransfer.files;
+                    updateFileName();
+                }
+            });
+            
+            fileInput.addEventListener('change', updateFileName);
+            
+            function updateFileName() {
+                if (fileInput.files.length > 0) {
+                    fileName.textContent = fileInput.files[0].name;
+                    errorMessage.classList.remove('active');
+                } else {
+                    fileName.textContent = '';
+                }
+            }
+            
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                if (!fileInput.files.length) {
+                    e.preventDefault();
+                    showError('Please select an image first');
+                    return;
+                }
+                
+                const selectedTechniques = document.querySelectorAll('input[name="technique"]:checked');
+                if (selectedTechniques.length === 0) {
+                    e.preventDefault();
+                    showError('Please select at least one processing technique');
+                    return;
+                }
+                
+                loading.classList.add('active');
+                resultsSection.classList.remove('active');
+                errorMessage.classList.remove('active');
+            });
+            
+            // Reset form
+            resetBtn.addEventListener('click', function() {
+                setTimeout(() => {
+                    optionCards.forEach(card => {
+                        card.classList.remove('selected');
+                        card.querySelector('.option-checkbox').classList.remove('checked');
+                    });
+                    fileName.textContent = '';
+                    resultsSection.classList.remove('active');
+                    errorMessage.classList.remove('active');
+                }, 10);
+            });
+            
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.classList.add('active');
+            }
+            
+            // If there are results from the server, display them
+            {% if processed_img %}
+                originalImg.src = "data:image/png;base64,{{ original_img }}";
+                processedImg.src = "data:image/png;base64,{{ processed_img }}";
+                resultsSection.classList.add('active');
+            {% endif %}
+            
+            // If there's an error from the server, display it
+            {% if error %}
+                showError("{{ error }}");
+            {% endif %}
+        });
+    </script>
+</body>
+</html>

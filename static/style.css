@@ -1,0 +1,164 @@
+/* 🌤️ الخلفية والخط */
+body {
+    background: linear-gradient(to bottom right, #e6f0ff, #ffffff);
+    font-family: "Tajawal", "Segoe UI", sans-serif;
+    direction: rtl;
+    margin: 0;
+    padding: 0;
+}
+
+/* 🧱 الحاوية العامة */
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* 💳 البطاقة الرئيسية */
+.card {
+    background: #fff;
+    max-width: 800px;
+    width: 100%;
+    padding: 30px;
+    border-radius: 25px;
+    box-shadow: 0px 4px 20px rgba(0, 51, 153, 0.15);
+    text-align: center;
+}
+
+/* 📝 العناوين */
+h1 {
+    color: #004aad;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+/* 📤 منطقة رفع الصور */
+/* 📤 منطقة رفع الصور (معدّلة) */
+.upload-box {
+  background: #f1f6ff;
+  border: 2px dashed #80aaff;
+  border-radius: 15px;
+  padding: 25px; /*  صغّرنا البوكس */
+  margin-bottom: 25px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  text-align: center;
+  max-width: 500px; /*  عرض محدد   */
+  margin-inline: auto; /* وسط الصفحة */
+}
+
+.upload-box:hover {
+  background: #eaf2ff;
+  border-color: #0066ff;
+}
+
+.upload-box p {
+  color: #004aad;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+}
+
+/*  النص اللي يطلع فيه اسم الملف */
+#file-name {
+  margin-top: 10px;
+  font-size: 15px;
+  color: #004aad;
+  font-weight: 500;
+}
+
+/* إخفاء زر الإدخال الأصلي */
+.upload-box input[type=file] {
+  display: none;
+}
+
+/* لما المستخدم يسحب ملف فوق المربع */
+.upload-box.dragover {
+  background: #e8f0ff;
+  border-color: #004aad;
+}
+
+
+/* ⚙️ خيارات المعالجة */
+.options {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.options label {
+    display: flex;
+    align-items: center;
+    text-align: right;
+    margin: 8px 0;
+    color: #333;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.options input[type="checkbox"] {
+    margin-left: 8px;
+    transform: scale(1.2);
+}
+
+/* 🔘 الزر */
+.btn {
+    background-color: #004aad;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    padding: 12px 30px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background-color: #0066ff;
+    transform: translateY(-2px);
+}
+
+/* 🖼️ النتائج */
+.results {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.results > div {
+    flex: 1;
+    min-width: 300px;
+    max-width: 400px;
+}
+
+.results img {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+.results img:hover {
+    transform: scale(1.02);
+}
+
+/* ⚠️ الأخطاء */
+.error {
+    color: red;
+    margin-top: 10px;
+    font-weight: bold;
+}
