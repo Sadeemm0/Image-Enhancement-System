@@ -56,8 +56,3 @@ Image Enhancement System/
 └── requirements.txt
 ```
 
----
-
-## Author
-**Sadeem Mohammed**
-Image Processing – Course Project

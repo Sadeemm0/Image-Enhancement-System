@@ -5,7 +5,7 @@ import base64
 
 app = Flask(__name__)
 
-# ----------- Helper Functions -----------
+# ----------- Helper Functions ----------
 def apply_clahe_bgr(img_bgr, clip_limit=2.0, tile_grid_size=(8, 8)):
     lab = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2LAB)
     l, a, b = cv2.split(lab)
